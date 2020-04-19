@@ -1,5 +1,6 @@
 from __future__ import print_function
 import pickle
+from datetime import datetime
 import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -55,12 +56,26 @@ def get_folder_id(service,name):
         folderID = folder.get('id')
     return folderID
 
+def getTimestampLabel():
+    return "BACKUP_"+datetime.now().strftime('%d_%b_%Y__%X').replace(":","_")
+	#return "BACKUP_"+time.strftime("%x").replace("/","-")+"_"+time.strftime("%X")+"_"+str(int(round(time.time())))
+
+def zip_this(directory):
+	print("Creating ZIP folder to upload...")
+	zipFileName = getTimestampLabel()+".zip"
+	os.system("zip -r "+zipFileName+" "+directory)
+	print("ZIP folder created: "+zipFileName+"\n")
+	return zipFileName # 'Backup_20_Apr_2020__00_22_18.zip'
+
 def main():
     service = get_service()
     print('Authenticated.')
 
     folderID = get_folder_id(service=service, name=GDRIVE_FOLDER_NAME)
     print("FolderID for {0} is {1}".format(GDRIVE_FOLDER_NAME, folderID))
+
+    zipFileName = zip_this(FOLDER_TO_ZIP_DIRECTORY)
+    print('zipped. {0}'.format(zipFileName))
 
 if __name__ == "__main__":
     main()
