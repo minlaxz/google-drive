@@ -25,6 +25,7 @@ class Job:
         self.destroy()
     
     def destroy(self):
+        self.fileName = None
         os.system("rm -f "+self.fileName)
 
     

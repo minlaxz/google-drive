@@ -20,12 +20,13 @@ def zip_this(directory):
 
 def user(handJob):
     u = input('upload? y/n :')
-    if (u=='y' or u=='Y'):
-        handJob.upload()
-    else:
-        handJob.destroy()
-        handJob.fileName = None
-        sys.exit()
+    handJob.upload() if u=='y' or u=='Y' else handJob.destroy()
+    # if (u=='y' or u=='Y'):
+    #     handJob.upload()
+    # else:
+    #     handJob.destroy()
+    #     handJob.fileName = None
+    #     sys.exit()
 
 def main():
     service = auth.get_service()
