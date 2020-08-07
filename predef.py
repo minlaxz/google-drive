@@ -5,3 +5,6 @@ SCOPES = ['https://www.googleapis.com/auth/drive']
 GDRIVE_FOLDER_NAME = "LAZE-BACKUP"  #folder on google drive
 FOLDER_TO_ZIP_DIRECTORY= "/home/laxz/go-to-drive"
 NOTIFICATION_EMIAL_ADDRESS = "mgmglatt.6991@gmail.com"
+
+DATASET = "/home/laxz/project-sync/cases"
+G_DATASET="sync-with-local/cases/"

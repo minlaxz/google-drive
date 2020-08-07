@@ -3,6 +3,7 @@ from datetime import datetime
 import os.path,sys,predef
 import makeAuth as auth
 import generalHandler as hand
+import argparse
 
 def getTimestampLabel():
     return "BACKUP_"+datetime.now().strftime('%d_%b_%Y__%X').replace(":","_")
@@ -21,23 +22,37 @@ def zip_this(directory):
 def user(handJob):
     u = input('upload? y/n :')
     handJob.upload() if u=='y' or u=='Y' else handJob.destroy()
-    # if (u=='y' or u=='Y'):
-    #     handJob.upload()
-    # else:
-    #     handJob.destroy()
-    #     handJob.fileName = None
-    #     sys.exit()
+
+# def process_this(path):
+#     service = auth.get_service()
+#     print('Authenticated.')
+    
+#     #zipFileName = zip_this(predef.FOLDER_TO_ZIP_DIRECTORY)
+#     #print('zipped name->{0}'.format(zipFileName))
+
+#     # let's go to constructor!
+#     handJob = hand.Job(fileName=path, service=service) # this is not ```handjob``` tho
+#     user(handJob)
 
 def main():
-    service = auth.get_service()
-    print('Authenticated.')
+    parser = argparse.ArgumentParser(description='laxz G-drive uploader-MLdataset or Backup')
+    parser.add_argument('-m','--mode',default = None ,required=True, 
+        help='select Mode how laxz G-drive runs. dataset, backup')
+    args = parser.parse_args()
+    
+    if(args.mode == "dataset"):
+        case = input('dataset case-? : ')
+        dataset_path = predef.DATASET+'/'+case
 
-    zipFileName = zip_this(predef.FOLDER_TO_ZIP_DIRECTORY)
-    print('zipped name->{0}'.format(zipFileName))
+        if(os.path.exists(dataset_path)):
+            os.system("zip -r /home/laxz/custom.zip "+dataset_path)
+            user(hand.Job("/home/laxz/custom.zip", auth.get_service(), args.mode, case))
 
-    # let's go to constructor!
-    handJob = hand.Job(fileName=zipFileName, service=service) # this is not ```handjob``` tho
-    user(handJob)
+        else:
+            print('path 404.')
+            exit()
+    else:
+        print('Not an option.')
 
 if __name__ == "__main__":
     main()

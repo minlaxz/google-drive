@@ -1,5 +1,7 @@
 token.pickle
 credentials.json
-test-old.py
+test.py
 __pycache__/
-.vscode/
+.ipynb_checkpoints
+credentials
+*.ipynb

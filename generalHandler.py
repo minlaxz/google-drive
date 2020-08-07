@@ -1,14 +1,16 @@
 from googleapiclient.http import MediaFileUpload
 import conn,sys,predef,os
 class Job:
-    def __init__(self, fileName, service):
+    def __init__(self, this_one, this_service, this_flag, this_case):
         if not conn.check():
             print('Internet connection needed.')
             sys.exit()
-        self.fileName = fileName
-        self.service = service
-        self.folderID = _get_folder_id(self.service)
-        print('ready to upload')
+        self.fileName = this_one
+        self.service = this_service
+        self.flag = this_flag
+        self.case=this_case
+        self.folderID = _get_folder_id(self.service, self.flag, self.case)
+        print('ready to upload {0}'.format(self.folderID))
     
     def zipThis(self):
         pass
@@ -30,8 +32,15 @@ class Job:
 
     
 
-def _get_folder_id(service):
-    results = service.files().list(q="name='"+predef.GDRIVE_FOLDER_NAME +"'",
+def _get_folder_id(service,flag,case):
+    if (flag=="dataset"):
+        G_FOLDER=predef.G_DATASET+case
+    elif (flag=="backup"):
+        G_FOLDER=predef.GDRIVE_FOLDER_NAME
+    else:
+        print("UnknOwn ErrOR!")
+        exit()
+    results = service.files().list(q="name='"+G_FOLDER +"'",
                             spaces='drive',
                             fields='nextPageToken, files(id, name)').execute()
     items = results.get('files', [])
